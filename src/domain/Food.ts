@@ -1,13 +1,26 @@
 export type FoodCategory =
-  | 'Fruits'
-  | 'Vegetables'
-  | 'Meat'
-  | 'Fish'
-  | 'Grains'
-  | 'Beverages'
-  | 'Snacks'
-  | 'Other'
-  | 'Leftovers';
+  | 'Frutta'
+  | 'Verdura'
+  | 'Carne'
+  | 'Pesce'
+  | 'Grano'
+  | 'Bevande'
+  | 'Snack'
+  | 'Avanzi'
+  | 'Altro';
+
+// Array of all food categories as strings
+export const FOOD_CATEGORIES: FoodCategory[] = [
+  'Frutta',
+  'Verdura',
+  'Carne',
+  'Pesce',
+  'Grano',
+  'Bevande',
+  'Snack',
+  'Avanzi',
+  'Altro',
+];
 
 export interface Food {
   name: string;

@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Pineapple",
+    "category": [
+      "Frutta"
+    ],
+    "location": "Kitchen",
+    "expirationDate": "2025-7-10",
+    "quantity": 1
+  },
+  {
+    "name": "Apple",
+    "category": [
+      "Frutta"
+    ],
+    "location": "Kitchen",
+    "expirationDate": "2025-7-30",
+    "quantity": 1
+  },
+  {
+    "name": "Banana",
+    "category": [
+      "Frutta"
+    ],
+    "location": "Kitchen",
+    "expirationDate": "2025-7-20",
+    "quantity": 1
+  },
+  {
+    "name": "Lenticchie",
+    "category": [
+      "Avanzi"
+    ],
+    "location": "Frigorifero",
+    "expirationDate": "2025-07-16T22:00:00.000Z",
+    "quantity": 1
+  },
+  {
+    "name": "Riso",
+    "category": [
+      "Avanzi"
+    ],
+    "location": "Frigorifero",
+    "expirationDate": "2025-07-17T22:00:00.000Z",
+    "quantity": 1
+  }
+]
