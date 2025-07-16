@@ -44,12 +44,9 @@ export default async function Home() {
   return (
     <div className=''>
       <main>
-        <Typography as='h1' className='text-4xl font-bold text-center'>
-          Save the Food
-        </Typography>
         <div className='mt-10'>
           <Link href='/add-food' className='flex justify-end'>
-            <Button>Add Food</Button>
+            <Button>Aggiungi un alimento</Button>
           </Link>
           <ul className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 mt-4'>
             {food.map((foodItem) => (
@@ -61,7 +58,8 @@ export default async function Home() {
           {food.length === 0 && (
             <div className='text-center mt-8 text-gray-500'>
               <Typography as='p'>
-                No food items found. Add your first food item!
+                Non ci sono alimenti da mostrare. Aggiungi il tuo primo
+                alimento!
               </Typography>
             </div>
           )}
