@@ -1,72 +1,56 @@
 [
   {
     "name": "Pineapple",
-    "category": [
-      "Frutta"
-    ],
+    "category": "Frutta",
     "location": "Kitchen",
     "expirationDate": "2025-7-10",
     "quantity": 1
   },
   {
     "name": "Apple",
-    "category": [
-      "Frutta"
-    ],
+    "category": "Frutta",
     "location": "Kitchen",
     "expirationDate": "2025-7-30",
     "quantity": 1
   },
   {
     "name": "Banana",
-    "category": [
-      "Frutta"
-    ],
+    "category": "Frutta",
     "location": "Kitchen",
     "expirationDate": "2025-7-20",
     "quantity": 1
   },
   {
     "name": "Lenticchie",
-    "category": [
-      "Avanzi"
-    ],
+    "category": "Avanzi",
     "location": "Frigorifero",
     "expirationDate": "2025-07-16T22:00:00.000Z",
     "quantity": 1
   },
   {
     "name": "Riso",
-    "category": [
-      "Avanzi"
-    ],
+    "category": "Avanzi",
     "location": "Frigorifero",
     "expirationDate": "2025-07-17T22:00:00.000Z",
     "quantity": 1
   },
   {
     "name": "Cetrioli",
-    "category": [
-      "Verdura"
-    ],
+    "category": "Verdura",
     "location": "Frigo",
     "expirationDate": "2025-07-21T22:00:00.000Z",
     "quantity": 1
   },
   {
     "name": "Carote",
-    "category": [
-      "Verdura"
-    ],
+    "category": "Verdura",
     "location": "Frigo",
     "expirationDate": "2025-07-16T06:28:10.874Z",
     "quantity": 1
   },
   {
     "name": "Pesto",
-    "category": [
-      "Altro"
-    ],
+    "category": "Altro",
     "location": "Frigo",
     "expirationDate": "2025-07-17T22:00:00.000Z",
     "quantity": 1
