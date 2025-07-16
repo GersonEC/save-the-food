@@ -6,11 +6,7 @@ export async function GET() {
   try {
     const data = await prisma.food.findMany({
       include: {
-        categories: {
-          include: {
-            category: true,
-          },
-        },
+        category: true,
       },
     });
     return NextResponse.json(data);
@@ -48,6 +44,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Find or create the category
+    let category = await prisma.category.findUnique({
+      where: { name: newFood.category },
+    });
+
+    if (!category) {
+      category = await prisma.category.create({
+        data: { name: newFood.category },
+      });
+    }
+
     // Create the food item
     const food = await prisma.food.create({
       data: {
@@ -56,40 +63,15 @@ export async function POST(request: NextRequest) {
         expirationDate,
         quantity: newFood.quantity || 1,
         image: newFood.image,
+        categoryId: category.id,
       },
     });
 
-    // Create category relationships
-    for (const categoryName of newFood.category) {
-      // Find or create the category
-      let category = await prisma.category.findUnique({
-        where: { name: categoryName },
-      });
-
-      if (!category) {
-        category = await prisma.category.create({
-          data: { name: categoryName },
-        });
-      }
-
-      // Create the relationship
-      await prisma.foodCategory.create({
-        data: {
-          foodId: food.id,
-          categoryId: category.id,
-        },
-      });
-    }
-
-    // Return the created food with categories
+    // Return the created food with category
     const createdFood = await prisma.food.findUnique({
       where: { id: food.id },
       include: {
-        categories: {
-          include: {
-            category: true,
-          },
-        },
+        category: true,
       },
     });
 

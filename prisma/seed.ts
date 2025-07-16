@@ -6,25 +6,24 @@ const prisma = new PrismaClient();
 // Type definitions for the food data
 interface FoodItem {
   name: string;
-  category: string[];
+  category: string;
   location: string;
   expirationDate: string;
   quantity: number;
-  image: string;
+  image?: string;
 }
 
 async function main() {
   console.log('🌱 Starting database seed...');
 
   // Clear existing data
-  await prisma.foodCategory.deleteMany();
   await prisma.food.deleteMany();
   await prisma.category.deleteMany();
 
   // Create categories from the food data
   const categoryNames = new Set<string>();
   (foodData as FoodItem[]).forEach((food) => {
-    food.category.forEach((cat) => categoryNames.add(cat));
+    categoryNames.add(food.category);
   });
 
   const categories = await Promise.all(
@@ -39,7 +38,7 @@ async function main() {
 
   console.log(`✅ Created ${categories.length} categories`);
 
-  // Create foods and their category relationships
+  // Create foods with their category relationships
   for (const foodItem of foodData as FoodItem[]) {
     // Parse expiration date (handle both string and ISO date formats)
     let expirationDate: Date;
@@ -56,29 +55,27 @@ async function main() {
       );
     }
 
-    // Create the food item
-    const food = await prisma.food.create({
+    // Find the category
+    const category = categories.find((cat) => cat.name === foodItem.category);
+
+    if (!category) {
+      console.warn(
+        `⚠️ Category "${foodItem.category}" not found for food "${foodItem.name}"`
+      );
+      continue;
+    }
+
+    // Create the food item with category relationship
+    await prisma.food.create({
       data: {
         name: foodItem.name,
         location: foodItem.location,
         expirationDate,
         quantity: foodItem.quantity,
         image: foodItem.image,
+        categoryId: category.id,
       },
     });
-
-    // Create category relationships
-    for (const categoryName of foodItem.category) {
-      const category = categories.find((cat) => cat.name === categoryName);
-      if (category) {
-        await prisma.foodCategory.create({
-          data: {
-            foodId: food.id,
-            categoryId: category.id,
-          },
-        });
-      }
-    }
   }
 
   console.log(

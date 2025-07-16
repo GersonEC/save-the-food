@@ -26,7 +26,7 @@ export const FOOD_CATEGORIES: FoodCategory[] = [
 
 export interface Food {
   name: string;
-  categories: Category[];
+  category: Category;
   expirationDate: Date;
   quantity: number;
   location?: string;

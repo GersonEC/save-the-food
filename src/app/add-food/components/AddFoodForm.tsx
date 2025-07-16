@@ -13,6 +13,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { FOOD_CATEGORIES, Food } from '@/domain/Food';
+import prisma from '@/lib/prisma-client';
+import { Category } from '@prisma/client';
 import { useForm } from '@tanstack/react-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -32,14 +34,20 @@ export function AddFoodForm() {
       image: '',
     },
     onSubmit: async (values) => {
-      debugger;
       setIsSubmitting(true);
       const { name, category, location, expirationDate, quantity, image } =
         values.value;
+      const categoryDb: Category | null = await prisma.category.findUnique({
+        where: { name: category },
+      });
+      if (!categoryDb) {
+        toast.error('Categoria non trovata');
+        return;
+      }
       try {
         const newFood: Food = {
           name,
-          category: [category as Food['category'][0]],
+          category: categoryDb,
           location,
           expirationDate,
           quantity,
