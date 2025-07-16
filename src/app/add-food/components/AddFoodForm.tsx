@@ -1,5 +1,6 @@
 'use client';
 
+import { CameraCapture } from '@/components/CameraCapture';
 import { DatePicker } from '@/components/DatePicker';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,11 +29,12 @@ export function AddFoodForm() {
       location: '',
       expirationDate: new Date(),
       quantity: 1,
+      image: '',
     },
     onSubmit: async (values) => {
       debugger;
       setIsSubmitting(true);
-      const { name, category, location, expirationDate, quantity } =
+      const { name, category, location, expirationDate, quantity, image } =
         values.value;
       try {
         const newFood: Food = {
@@ -41,6 +43,7 @@ export function AddFoodForm() {
           location,
           expirationDate,
           quantity,
+          image: image || undefined,
         };
 
         // Send the new food data to the API
@@ -56,6 +59,7 @@ export function AddFoodForm() {
           toast.success('Cibo aggiunto con successo');
           router.push('/');
         } else {
+          toast.error('Si è verificato un errore');
           console.error('Failed to add food');
         }
       } catch (error) {
@@ -187,6 +191,20 @@ export function AddFoodForm() {
                   id={field.name}
                   name={field.name}
                   handleChangeDate={(e) => field.handleChange(e || new Date())}
+                />
+              </div>
+            );
+          }}
+        </form.Field>
+        <form.Field name='image'>
+          {(field) => {
+            return (
+              <div className='flex flex-col gap-2'>
+                <Label htmlFor={field.name}>Foto del cibo</Label>
+                <CameraCapture
+                  onImageCapture={(imageData) => field.handleChange(imageData)}
+                  onImageRemove={() => field.handleChange('')}
+                  currentImage={field.state.value}
                 />
               </div>
             );

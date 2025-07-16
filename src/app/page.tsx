@@ -1,7 +1,6 @@
 import { CardFood } from '@/components/CardFood';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/ui/button';
-import { Toaster } from '@/components/ui/sonner';
 import { Food } from '@/domain/Food';
 import Link from 'next/link';
 
@@ -68,7 +67,7 @@ export default async function Home() {
           )}
         </div>
       </main>
-      <Toaster />
+
       <footer className='row-start-3 flex gap-[24px] flex-wrap items-center justify-center'></footer>
     </div>
   );

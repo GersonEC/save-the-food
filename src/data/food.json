@@ -43,5 +43,32 @@
     "location": "Frigorifero",
     "expirationDate": "2025-07-17T22:00:00.000Z",
     "quantity": 1
+  },
+  {
+    "name": "Cetrioli",
+    "category": [
+      "Verdura"
+    ],
+    "location": "Frigo",
+    "expirationDate": "2025-07-21T22:00:00.000Z",
+    "quantity": 1
+  },
+  {
+    "name": "Carote",
+    "category": [
+      "Verdura"
+    ],
+    "location": "Frigo",
+    "expirationDate": "2025-07-16T06:28:10.874Z",
+    "quantity": 1
+  },
+  {
+    "name": "Pesto",
+    "category": [
+      "Altro"
+    ],
+    "location": "Frigo",
+    "expirationDate": "2025-07-17T22:00:00.000Z",
+    "quantity": 1
   }
 ]

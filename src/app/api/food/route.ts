@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
       location: newFood.location || 'Kitchen',
       expirationDate: newFood.expirationDate,
       quantity: newFood.quantity,
+      image: newFood.image,
     });
 
     // Write back to file
