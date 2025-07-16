@@ -23,47 +23,61 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const requestData = await request.json();
-    const newFood = {
-      ...requestData,
-      expirationDate: requestData.expirationDate as string,
-    };
+    const { name, category, location, expirationDate, quantity, image } =
+      requestData;
+
+    // Validate required fields
+    if (!name || !category) {
+      return NextResponse.json(
+        { error: 'Name and category are required' },
+        { status: 400 }
+      );
+    }
 
     // Parse expiration date
-    let expirationDate: Date;
-    const expirationDateStr = newFood.expirationDate;
-    if (expirationDateStr.includes('T')) {
-      // ISO date format
-      expirationDate = new Date(expirationDateStr);
+    let parsedExpirationDate: Date;
+    if (expirationDate instanceof Date) {
+      parsedExpirationDate = expirationDate;
+    } else if (typeof expirationDate === 'string') {
+      if (expirationDate.includes('T')) {
+        // ISO date format
+        parsedExpirationDate = new Date(expirationDate);
+      } else {
+        // Simple date format (e.g., "2025-7-10")
+        const [year, month, day] = expirationDate.split('-');
+        parsedExpirationDate = new Date(
+          parseInt(year),
+          parseInt(month) - 1,
+          parseInt(day)
+        );
+      }
     } else {
-      // Simple date format (e.g., "2025-7-10")
-      const [year, month, day] = expirationDateStr.split('-');
-      expirationDate = new Date(
-        parseInt(year),
-        parseInt(month) - 1,
-        parseInt(day)
+      return NextResponse.json(
+        { error: 'Invalid expiration date format' },
+        { status: 400 }
       );
     }
 
     // Find or create the category
-    let category = await prisma.category.findUnique({
-      where: { name: newFood.category },
+    let categoryRecord = await prisma.category.findUnique({
+      where: { name: category },
     });
 
-    if (!category) {
-      category = await prisma.category.create({
-        data: { name: newFood.category },
+    if (!categoryRecord) {
+      categoryRecord = await prisma.category.create({
+        data: { name: category },
       });
     }
 
     // Create the food item
     const food = await prisma.food.create({
       data: {
-        name: newFood.name,
-        location: newFood.location || 'Kitchen',
-        expirationDate,
-        quantity: newFood.quantity || 1,
-        image: newFood.image,
-        categoryId: category.id,
+        name,
+        location: location || 'Kitchen',
+        expirationDate: parsedExpirationDate,
+        quantity: quantity || 1,
+        image: image,
+        categoryId: categoryRecord.id,
       },
     });
 

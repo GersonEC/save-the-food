@@ -1,5 +1,3 @@
-import { Category } from '@prisma/client';
-
 export type FoodCategory =
   | 'Frutta'
   | 'Verdura'
@@ -26,7 +24,7 @@ export const FOOD_CATEGORIES: FoodCategory[] = [
 
 export interface Food {
   name: string;
-  category: Category;
+  category: FoodCategory;
   expirationDate: Date;
   quantity: number;
   location?: string;

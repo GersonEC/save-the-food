@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Typography } from '../Typography';
 import { Progress } from '../ui/progress';
 import { useEffect, useState } from 'react';
-import { Food, FoodCategory } from '@/domain/Food';
+import { Food } from '@/domain/Food';
 import { calculateProgress, cn, getDaysRemaining } from '@/lib/utils';
 import { BadgeCategory } from '../BadgeCategory';
 
@@ -47,7 +47,7 @@ export const CardFood = ({ food }: CardFoodProps) => {
           {food.name}
         </Typography>
         {/* TODO: fix this as FoodCategory */}
-        <BadgeCategory category={food.category.name as FoodCategory} />
+        <BadgeCategory category={food.category} />
         {/* <Typography as='p'>Food Description</Typography> */}
         {/* <p>{food.location}</p>
         <p>{food.quantity}</p> */}

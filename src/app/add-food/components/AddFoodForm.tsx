@@ -12,9 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { FOOD_CATEGORIES, Food } from '@/domain/Food';
-import prisma from '@/lib/prisma-client';
-import { Category } from '@prisma/client';
+import { FOOD_CATEGORIES } from '@/domain/Food';
 import { useForm } from '@tanstack/react-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -37,41 +35,35 @@ export function AddFoodForm() {
       setIsSubmitting(true);
       const { name, category, location, expirationDate, quantity, image } =
         values.value;
-      const categoryDb: Category | null = await prisma.category.findUnique({
-        where: { name: category },
-      });
-      if (!categoryDb) {
-        toast.error('Categoria non trovata');
-        return;
-      }
-      try {
-        const newFood: Food = {
-          name,
-          category: categoryDb,
-          location,
-          expirationDate,
-          quantity,
-          image: image || undefined,
-        };
 
+      try {
         // Send the new food data to the API
         const response = await fetch('/api/food', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(newFood),
+          body: JSON.stringify({
+            name,
+            category,
+            location,
+            expirationDate,
+            quantity,
+            image: image || undefined,
+          }),
         });
 
         if (response.ok) {
           toast.success('Cibo aggiunto con successo');
           router.push('/');
         } else {
-          toast.error('Si è verificato un errore');
-          console.error('Failed to add food');
+          const errorData = await response.json();
+          toast.error(errorData.error || 'Si è verificato un errore');
+          console.error('Failed to add food:', errorData);
         }
       } catch (error) {
         console.error('Error adding food:', error);
+        toast.error('Si è verificato un errore di connessione');
       } finally {
         setIsSubmitting(false);
       }
