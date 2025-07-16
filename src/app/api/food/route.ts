@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
-import { Food } from '@/domain/Food';
-
-const dataFilePath = path.join(process.cwd(), 'src', 'data', 'food.json');
+import prisma from '@/lib/prisma-client';
 
 // GET /api/food - Get all food items
 export async function GET() {
   try {
-    const data = await fs.readFile(dataFilePath, 'utf8');
-    const food = JSON.parse(data);
-    return NextResponse.json(food);
+    const data = await prisma.food.findMany({
+      include: {
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    });
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Error reading food data:', error);
     return NextResponse.json(
@@ -23,27 +26,75 @@ export async function GET() {
 // POST /api/food - Add a new food item
 export async function POST(request: NextRequest) {
   try {
-    const newFood: Food = await request.json();
+    const requestData = await request.json();
+    const newFood = {
+      ...requestData,
+      expirationDate: requestData.expirationDate as string,
+    };
 
-    // Read existing data
-    const data = await fs.readFile(dataFilePath, 'utf8');
-    const food = JSON.parse(data);
+    // Parse expiration date
+    let expirationDate: Date;
+    const expirationDateStr = newFood.expirationDate;
+    if (expirationDateStr.includes('T')) {
+      // ISO date format
+      expirationDate = new Date(expirationDateStr);
+    } else {
+      // Simple date format (e.g., "2025-7-10")
+      const [year, month, day] = expirationDateStr.split('-');
+      expirationDate = new Date(
+        parseInt(year),
+        parseInt(month) - 1,
+        parseInt(day)
+      );
+    }
 
-    // Add new food item
-    food.push({
-      name: newFood.name,
-      category: newFood.category,
-      location: newFood.location || 'Kitchen',
-      expirationDate: newFood.expirationDate,
-      quantity: newFood.quantity,
-      image: newFood.image,
+    // Create the food item
+    const food = await prisma.food.create({
+      data: {
+        name: newFood.name,
+        location: newFood.location || 'Kitchen',
+        expirationDate,
+        quantity: newFood.quantity || 1,
+        image: newFood.image,
+      },
     });
 
-    // Write back to file
-    await fs.writeFile(dataFilePath, JSON.stringify(food, null, 2));
+    // Create category relationships
+    for (const categoryName of newFood.category) {
+      // Find or create the category
+      let category = await prisma.category.findUnique({
+        where: { name: categoryName },
+      });
+
+      if (!category) {
+        category = await prisma.category.create({
+          data: { name: categoryName },
+        });
+      }
+
+      // Create the relationship
+      await prisma.foodCategory.create({
+        data: {
+          foodId: food.id,
+          categoryId: category.id,
+        },
+      });
+    }
+
+    // Return the created food with categories
+    const createdFood = await prisma.food.findUnique({
+      where: { id: food.id },
+      include: {
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    });
 
     return NextResponse.json(
-      { message: 'Food added successfully' },
+      { message: 'Food added successfully', food: createdFood },
       { status: 201 }
     );
   } catch (error) {
