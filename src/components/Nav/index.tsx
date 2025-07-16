@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ModeToggle } from '../ToggleMode';
+import { ToggleMode } from '../ToggleMode';
 import { Typography } from '../Typography';
 
 export function Nav() {
@@ -11,7 +11,7 @@ export function Nav() {
         </Typography>
       </Link>
       <div className='mb-2'>
-        <ModeToggle />
+        <ToggleMode />
       </div>
     </div>
   );
