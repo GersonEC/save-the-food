@@ -47,7 +47,7 @@ export const CardFood = ({ food }: CardFoodProps) => {
           {food.name}
         </Typography>
         {/* TODO: fix this as FoodCategory */}
-        <BadgeCategory category={food.category} />
+        <BadgeCategory category={food.category.name} />
         {/* <Typography as='p'>Food Description</Typography> */}
         {/* <p>{food.location}</p>
         <p>{food.quantity}</p> */}

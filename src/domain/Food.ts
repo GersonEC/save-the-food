@@ -22,9 +22,14 @@ export const FOOD_CATEGORIES: FoodCategory[] = [
   'Altro',
 ];
 
+export interface Category {
+  id: string;
+  name: FoodCategory;
+}
+
 export interface Food {
   name: string;
-  category: FoodCategory;
+  category: Category;
   expirationDate: Date;
   quantity: number;
   location?: string;
