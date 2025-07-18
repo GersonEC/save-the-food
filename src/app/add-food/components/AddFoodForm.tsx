@@ -1,5 +1,6 @@
 'use client';
 
+import { useFood } from '@/app/hooks/useFood';
 import { CameraCapture } from '@/components/CameraCapture';
 import { DatePicker } from '@/components/DatePicker';
 import { Button } from '@/components/ui/button';
@@ -12,15 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { FOOD_CATEGORIES } from '@/domain/Food';
+import { Food, FOOD_CATEGORIES, FoodCategory } from '@/domain/Food';
 import { useForm } from '@tanstack/react-form';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 export function AddFoodForm() {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { mutation } = useFood();
 
   const form = useForm({
     defaultValues: {
@@ -35,32 +35,19 @@ export function AddFoodForm() {
       setIsSubmitting(true);
       const { name, category, location, expirationDate, quantity, image } =
         values.value;
-
+      const food: Food = {
+        name,
+        category: {
+          id: '',
+          name: category as FoodCategory,
+        },
+        location,
+        expirationDate,
+        quantity,
+        image,
+      };
       try {
-        // Send the new food data to the API
-        const response = await fetch('/api/food', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            category,
-            location,
-            expirationDate,
-            quantity,
-            image: image || undefined,
-          }),
-        });
-
-        if (response.ok) {
-          toast.success('Cibo aggiunto con successo');
-          router.push('/');
-        } else {
-          const errorData = await response.json();
-          toast.error(errorData.error || 'Si è verificato un errore');
-          console.error('Failed to add food:', errorData);
-        }
+        mutation.mutate(food);
       } catch (error) {
         console.error('Error adding food:', error);
         toast.error('Si è verificato un errore di connessione');
