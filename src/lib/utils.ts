@@ -41,17 +41,17 @@ export const calculateProgress = (food: Food): number => {
 };
 
 // Calculate days remaining for display
-export const getDaysRemaining = (food: Food) => {
+export const getDaysRemaining = (food: Food): number => {
   const today = new Date();
   const expirationDate = new Date(food.expirationDate);
   const timeDiff = expirationDate.getTime() - today.getTime();
   const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
   if (daysRemaining <= 0) {
-    return 'Scaduto';
+    return 0;
   } else if (daysRemaining === 1) {
-    return '1 giorno rimasto';
+    return 1;
   } else {
-    return `${daysRemaining} giorni rimasti`;
+    return daysRemaining;
   }
 };

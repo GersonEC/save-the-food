@@ -13,9 +13,16 @@ interface Props {
   name: string;
   handleChangeDate: (date: Date | undefined) => void;
   required?: boolean;
+  placeholder?: string;
 }
 
-export function DatePicker({ name, id, handleChangeDate, required }: Props) {
+export function DatePicker({
+  name,
+  id,
+  handleChangeDate,
+  required,
+  placeholder,
+}: Props) {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [open, setOpen] = useState(false);
 
@@ -33,13 +40,13 @@ export function DatePicker({ name, id, handleChangeDate, required }: Props) {
         <Button
           variant={'outline'}
           className={cn(
-            'w-full justify-start text-left font-normal',
+            'w-full justify-start text-left font-normal border-none shadow-none bg-green-500/20 rounded-xl p-4',
             !date && 'text-muted-foreground'
           )}
         >
           <CalendarIcon />
-          {/* {date ? format(date, 'PPP') : <span>Pick a date</span>} */}
-          {formattedStringDate}
+          {date ? format(date, 'PPP') : <span>{placeholder}</span>}
+          {/* {formattedStringDate} */}
           <input type='hidden' name={name} value={formattedStringDate} />
         </Button>
       </PopoverTrigger>

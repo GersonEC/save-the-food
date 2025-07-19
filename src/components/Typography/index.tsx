@@ -22,7 +22,8 @@ export const Typography = ({
     'scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0';
   const h3CustomClassName = 'scroll-m-20 text-2xl font-semibold tracking-tight';
   const h4CustomClassName = 'scroll-m-20 text-xl font-semibold tracking-tight';
-  const pCustomClassName = 'leading-7 [&:not(:first-child)]:mt-2';
+  const pCustomClassName =
+    'leading-7 [&:not(:first-child)]:mt-2 dark:text-muted-foreground';
   const spanCustomClassName = 'leading-7';
   const codeCustomClassName =
     'bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold';

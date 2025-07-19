@@ -11,11 +11,15 @@ import { Category } from '@prisma/client';
 import { Plus } from 'lucide-react';
 import { DialogAddCategory } from '@/components/DialogAddCategory';
 import { toast } from 'sonner';
+import { BadgeCategory } from '@/components/BadgeCategory';
+import { FoodCategory } from '@/domain/Food';
+import { Input } from '@/components/ui/input';
 
 export default function Home() {
   const { query } = useFood();
   const { query: categoryQuery, mutation } = useCategory();
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
+  const [search, setSearch] = useState('');
 
   if (query.status === 'pending') {
     return (
@@ -47,16 +51,39 @@ export default function Home() {
     }
   };
 
+  const foodSortedByExpirationDate = query.data.sort((a, b) => {
+    return (
+      new Date(a.expirationDate).getTime() -
+      new Date(b.expirationDate).getTime()
+    );
+  });
+
+  const filteredFood = foodSortedByExpirationDate.filter((food) =>
+    food.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className=''>
-      <main>
-        <div className='mt-10'>
-          <Link href='/add-food' className='flex justify-end'>
-            <Button>Aggiungi un alimento</Button>
-          </Link>
-          <ul className='flex gap-4'>
+    <div>
+      <main className='p-4'>
+        <div className='flex flex-col gap-4'>
+          <Button className='self-end'>
+            <Link href='/add-food'>
+              <Plus />
+            </Link>
+          </Button>
+          <Input
+            className='border-none shadow-none bg-green-500/20 rounded-xl p-4'
+            type='text'
+            placeholder='Cerca un alimento'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <ul className='flex items-center justify-center gap-4 flex-wrap'>
             {categoryQuery.data.map((category: Category) => (
-              <li key={category.id}>{category.name}</li>
+              <BadgeCategory
+                key={category.id}
+                category={category.name as FoodCategory}
+              />
             ))}
             <Button
               variant='outline'
@@ -66,7 +93,7 @@ export default function Home() {
             </Button>
           </ul>
           <ul className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 mt-4'>
-            {query.data.map((foodItem) => (
+            {filteredFood.map((foodItem) => (
               <li key={foodItem.name}>
                 <CardFood food={foodItem} />
               </li>
@@ -87,7 +114,15 @@ export default function Home() {
         setIsCategoryDialogOpen={setIsCategoryDialogOpen}
         handleAddCategory={handleAddCategory}
       />
-      <footer className='row-start-3 flex gap-[24px] flex-wrap items-center justify-center'></footer>
+      <footer className='p-4'>
+        <Typography as='p'>
+          <span className='font-bold'>Save the Food</span> è un progetto
+          sviluppato da{' '}
+          <a href='https://www.linkedin.com/in/matteo-cavalli-9000000000000000000000000000000000000000/'>
+            Gerson Enriquez
+          </a>
+        </Typography>
+      </footer>
     </div>
   );
 }

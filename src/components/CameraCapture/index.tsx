@@ -159,7 +159,7 @@ export function CameraCapture({
             type='button'
             onClick={() => fileInputRef.current?.click()}
             variant='outline'
-            className='flex-1'
+            className='flex-1 border-none shadow-none bg-green-500/20 rounded-xs p-4'
           >
             <Camera className='h-4 w-4 mr-2' />
             Carica Foto

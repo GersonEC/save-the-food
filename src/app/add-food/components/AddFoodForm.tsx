@@ -5,7 +5,7 @@ import { CameraCapture } from '@/components/CameraCapture';
 import { DatePicker } from '@/components/DatePicker';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+// import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -75,12 +75,13 @@ export function AddFoodForm() {
           {(field) => {
             return (
               <div className='flex flex-col gap-2'>
-                <Label htmlFor={field.name}>Nome</Label>
                 <Input
+                  className='border-none shadow-none bg-green-500/20 rounded-md p-4'
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder='es. Pane, Carne, Lenticchie...'
                 />
                 {field.state.meta.errorMap['onChange'] && (
                   <em className='text-red-700 text-sm'>
@@ -101,12 +102,12 @@ export function AddFoodForm() {
           {(field) => {
             return (
               <div className='flex flex-col gap-2'>
-                <Label htmlFor={field.name}>Categoria</Label>
+                {/* <Label htmlFor={field.name}>Categoria</Label> */}
                 <Select
                   value={field.state.value}
                   onValueChange={(value) => field.handleChange(value)}
                 >
-                  <SelectTrigger className='w-full'>
+                  <SelectTrigger className='w-full border-none shadow-none bg-green-500/20 rounded-md p-4'>
                     <SelectValue placeholder='Seleziona una categoria' />
                   </SelectTrigger>
                   <SelectContent>
@@ -130,8 +131,9 @@ export function AddFoodForm() {
           {(field) => {
             return (
               <div className='flex flex-col gap-2'>
-                <Label htmlFor={field.name}>Posizione</Label>
+                {/* <Label htmlFor={field.name}>Posizione</Label> */}
                 <Input
+                  className='border-none shadow-none bg-green-500/20 rounded-md p-4'
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
@@ -152,8 +154,9 @@ export function AddFoodForm() {
           {(field) => {
             return (
               <div className='flex flex-col gap-2'>
-                <Label htmlFor={field.name}>Quantità</Label>
+                {/* <Label htmlFor={field.name}>Quantità</Label> */}
                 <Input
+                  className='border-none shadow-none bg-green-500/20 rounded-md p-4'
                   type='number'
                   id={field.name}
                   name={field.name}
@@ -173,11 +176,12 @@ export function AddFoodForm() {
           {(field) => {
             return (
               <div className='flex flex-col gap-2'>
-                <Label htmlFor={field.name}>Scadenza</Label>
+                {/* <Label htmlFor={field.name}>Scadenza</Label> */}
                 <DatePicker
                   id={field.name}
                   name={field.name}
                   handleChangeDate={(e) => field.handleChange(e || new Date())}
+                  placeholder='Scadenza'
                 />
               </div>
             );
@@ -187,7 +191,7 @@ export function AddFoodForm() {
           {(field) => {
             return (
               <div className='flex flex-col gap-2'>
-                <Label htmlFor={field.name}>Foto del cibo</Label>
+                {/* <Label htmlFor={field.name}>Foto del cibo</Label> */}
                 <CameraCapture
                   onImageCapture={(imageData) => field.handleChange(imageData)}
                   onImageRemove={() => field.handleChange('')}
