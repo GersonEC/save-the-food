@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Camera, Upload, X } from 'lucide-react';
+import { Camera, X } from 'lucide-react';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 
@@ -25,24 +25,24 @@ export function CameraCapture({
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' }, // Use back camera on mobile
-        audio: false,
-      });
+  // const startCamera = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({
+  //       video: { facingMode: 'environment' }, // Use back camera on mobile
+  //       audio: false,
+  //     });
 
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        streamRef.current = stream;
-        setIsCameraActive(true);
-      }
-    } catch (error) {
-      console.error('Error accessing camera:', error);
-      // Fallback to file upload if camera access fails
-      fileInputRef.current?.click();
-    }
-  };
+  //     if (videoRef.current) {
+  //       videoRef.current.srcObject = stream;
+  //       streamRef.current = stream;
+  //       setIsCameraActive(true);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error accessing camera:', error);
+  //     // Fallback to file upload if camera access fails
+  //     fileInputRef.current?.click();
+  //   }
+  // };
 
   const stopCamera = () => {
     if (streamRef.current) {
@@ -157,20 +157,11 @@ export function CameraCapture({
         <div className='flex gap-2'>
           <Button
             type='button'
-            onClick={startCamera}
-            variant='outline'
-            className='flex-1'
-          >
-            <Camera className='h-4 w-4 mr-2' />
-            Scatta Foto
-          </Button>
-          <Button
-            type='button'
             onClick={() => fileInputRef.current?.click()}
             variant='outline'
             className='flex-1'
           >
-            <Upload className='h-4 w-4 mr-2' />
+            <Camera className='h-4 w-4 mr-2' />
             Carica Foto
           </Button>
         </div>

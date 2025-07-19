@@ -1,13 +1,20 @@
 'use client';
 
+import { useState } from 'react';
 import { CardFood } from '@/components/CardFood';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useCategory } from './hooks/useCategory';
 import { useFood } from './hooks/useFood';
+import { Category } from '@prisma/client';
+import { Plus } from 'lucide-react';
+import { DialogAddCategory } from '@/components/DialogAddCategory';
 
 export default function Home() {
   const { query } = useFood();
+  const { query: categoryQuery, mutation } = useCategory();
+  const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
 
   if (query.status === 'pending') {
     return (
@@ -27,6 +34,10 @@ export default function Home() {
     );
   }
 
+  const handleAddCategory = (categoryName: string) => {
+    mutation.mutate(categoryName);
+  };
+
   return (
     <div className=''>
       <main>
@@ -34,6 +45,19 @@ export default function Home() {
           <Link href='/add-food' className='flex justify-end'>
             <Button>Aggiungi un alimento</Button>
           </Link>
+          <ul className='flex gap-4'>
+            {categoryQuery.data.map((category: Category) => (
+              <li key={category.id}>
+                <Link href={`/category/${category.id}`}>{category.name}</Link>
+              </li>
+            ))}
+            <Button
+              variant='outline'
+              onClick={() => setIsCategoryDialogOpen(true)}
+            >
+              <Plus />
+            </Button>
+          </ul>
           <ul className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 mt-4'>
             {query.data.map((foodItem) => (
               <li key={foodItem.name}>
@@ -51,7 +75,11 @@ export default function Home() {
           )}
         </div>
       </main>
-
+      <DialogAddCategory
+        isCategoryDialogOpen={isCategoryDialogOpen}
+        setIsCategoryDialogOpen={setIsCategoryDialogOpen}
+        handleAddCategory={handleAddCategory}
+      />
       <footer className='row-start-3 flex gap-[24px] flex-wrap items-center justify-center'></footer>
     </div>
   );

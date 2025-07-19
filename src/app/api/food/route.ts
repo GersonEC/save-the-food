@@ -98,3 +98,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to add food' }, { status: 500 });
   }
 }
+
+// DELETE /api/food - Delete a food item
+export async function DELETE(request: NextRequest) {
+  try {
+    const requestData = await request.json();
+    const { id } = requestData;
+
+    // Delete the food item
+    await prisma.food.delete({
+      where: { id },
+    });
+    return NextResponse.json({ message: 'Food deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting food:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete food' },
+      { status: 500 }
+    );
+  }
+}

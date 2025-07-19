@@ -1,5 +1,5 @@
 import { Food } from '@/domain/Food';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -10,7 +10,6 @@ type FoodFromJSON = Omit<Food, 'expirationDate'> & {
 
 export const useFood = () => {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   const query = useQuery({
     queryKey: ['food'],
@@ -37,37 +36,36 @@ export const useFood = () => {
 
   const mutation = useMutation({
     mutationFn: async (food: Food) => {
-      try {
-        // Send the new food data to the API
-        const { name, category, location, expirationDate, quantity, image } =
-          food;
-        const response = await fetch('/api/food', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            category: category.name,
-            location,
-            expirationDate,
-            quantity,
-            image: image || undefined,
-          }),
-        });
-        if (response.ok) {
-          toast.success('Cibo aggiunto con successo');
-          router.push('/');
-          queryClient.invalidateQueries({ queryKey: ['food'] });
-        } else {
-          const errorData = await response.json();
-          toast.error(errorData.error || 'Si è verificato un errore');
-          console.error('Failed to add food:', errorData);
-        }
-      } catch (error) {
-        console.error('Error adding food:', error);
-        toast.error('Si è verificato un errore di connessione');
+      // Send the new food data to the API
+      const { name, category, location, expirationDate, quantity, image } =
+        food;
+      const response = await fetch('/api/food', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          category: category.name,
+          location,
+          expirationDate,
+          quantity,
+          image: image || undefined,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Errore nell'aggiunta del cibo");
       }
+      return response.json();
+    },
+    onSuccess: () => {
+      toast.success('Cibo aggiunto con successo');
+      query.refetch();
+      router.push('/');
+    },
+    onError: (error) => {
+      console.error('Error adding food:', error);
+      toast.error('Si è verificato un errore di connessione');
     },
   });
 
