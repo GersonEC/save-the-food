@@ -10,6 +10,7 @@ import { useFood } from './hooks/useFood';
 import { Category } from '@prisma/client';
 import { Plus } from 'lucide-react';
 import { DialogAddCategory } from '@/components/DialogAddCategory';
+import { toast } from 'sonner';
 
 export default function Home() {
   const { query } = useFood();
@@ -35,7 +36,15 @@ export default function Home() {
   }
 
   const handleAddCategory = (categoryName: string) => {
-    mutation.mutate(categoryName);
+    const alreadyExists = categoryQuery.data.find(
+      (category: Category) =>
+        category.name.toLowerCase() === categoryName.toLowerCase()
+    );
+    if (alreadyExists) {
+      toast.error('Categoria già esistente');
+    } else {
+      mutation.mutate(categoryName);
+    }
   };
 
   return (
@@ -47,9 +56,7 @@ export default function Home() {
           </Link>
           <ul className='flex gap-4'>
             {categoryQuery.data.map((category: Category) => (
-              <li key={category.id}>
-                <Link href={`/category/${category.id}`}>{category.name}</Link>
-              </li>
+              <li key={category.id}>{category.name}</li>
             ))}
             <Button
               variant='outline'
