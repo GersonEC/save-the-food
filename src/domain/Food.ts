@@ -28,6 +28,7 @@ export interface Category {
 }
 
 export interface Food {
+  id?: string;
   name: string;
   category: Category;
   expirationDate: Date;

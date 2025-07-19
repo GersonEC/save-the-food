@@ -7,12 +7,15 @@ import { useEffect, useState } from 'react';
 import { Food } from '@/domain/Food';
 import { calculateProgress, cn, getDaysRemaining } from '@/lib/utils';
 import { BadgeCategory } from '../BadgeCategory';
+import { Button } from '../ui/button';
+import { toast } from 'sonner';
 
 interface CardFoodProps {
   food: Food;
+  onDelete: (foodId: string) => void;
 }
 
-export const CardFood = ({ food }: CardFoodProps) => {
+export const CardFood = ({ food, onDelete }: CardFoodProps) => {
   const [progress, setProgress] = useState(0);
   const [isExpired, setIsExpired] = useState(false);
 
@@ -25,6 +28,14 @@ export const CardFood = ({ food }: CardFoodProps) => {
   useEffect(() => {
     setIsExpired(getDaysRemaining(food) === 0);
   }, [food]);
+
+  const handleDelete = (foodId: string) => {
+    if (foodId.length > 0) {
+      onDelete(foodId);
+    } else {
+      toast.error('Errore nella rimozione del cibo');
+    }
+  };
 
   return (
     <div className={cn('w-full flex gap-4 p-2', isExpired ? '' : '')}>
@@ -67,7 +78,7 @@ export const CardFood = ({ food }: CardFoodProps) => {
               : `${getDaysRemaining(food)} giorni rimasti`}
           </Typography>
         </div>
-        <div>
+        <div className='flex justify-between items-center w-full'>
           <Typography as='p' className='text-xs text-end text-gray-500'>
             Data di scadenza:{' '}
             {new Date(food.expirationDate).toLocaleDateString('it-IT', {
@@ -76,6 +87,13 @@ export const CardFood = ({ food }: CardFoodProps) => {
               day: 'numeric',
             })}
           </Typography>
+          <Button
+            variant='link'
+            className='text-red-600 text-xs'
+            onClick={() => handleDelete(food.id || '')}
+          >
+            Rimuovi
+          </Button>
         </div>
       </div>
     </div>

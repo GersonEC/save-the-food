@@ -51,6 +51,23 @@ export default function Home() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(`/api/food`, {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+      });
+      if (!response.ok) {
+        throw new Error('Errore nella rimozione del cibo');
+      }
+      toast.success('Cibo rimosso con successo');
+      query.refetch();
+    } catch (error) {
+      console.error('Error deleting food:', error);
+      toast.error('Errore nella rimozione del cibo');
+    }
+  };
+
   const foodSortedByExpirationDate = query.data.sort((a, b) => {
     return (
       new Date(a.expirationDate).getTime() -
@@ -85,17 +102,17 @@ export default function Home() {
                 category={category.name as FoodCategory}
               />
             ))}
-            <Button
+            {/* <Button
               variant='outline'
               onClick={() => setIsCategoryDialogOpen(true)}
             >
               <Plus />
-            </Button>
+            </Button> */}
           </ul>
           <ul className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 mt-4'>
             {filteredFood.map((foodItem) => (
               <li key={foodItem.name}>
-                <CardFood food={foodItem} />
+                <CardFood food={foodItem} onDelete={handleDelete} />
               </li>
             ))}
           </ul>
