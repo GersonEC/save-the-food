@@ -28,7 +28,7 @@ export function AddFoodForm() {
       category: '',
       location: '',
       expirationDate: new Date(),
-      quantity: 1,
+      quantity: '',
       image: '',
     },
     onSubmit: async (values) => {
@@ -43,7 +43,7 @@ export function AddFoodForm() {
         },
         location,
         expirationDate,
-        quantity,
+        quantity: Number(quantity),
         image,
       };
       try {
@@ -76,12 +76,12 @@ export function AddFoodForm() {
             return (
               <div className='flex flex-col gap-2'>
                 <Input
-                  className='border-none shadow-none bg-green-500/20 rounded-md p-4'
+                  className='border-none shadow-none bg-green-500/20 rounded-md p-4 placeholder:text-sm '
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder='es. Pane, Carne, Lenticchie...'
+                  placeholder='pane, lenticchie, yogurt...'
                 />
                 {field.state.meta.errorMap['onChange'] && (
                   <em className='text-red-700 text-sm'>
@@ -133,12 +133,12 @@ export function AddFoodForm() {
               <div className='flex flex-col gap-2'>
                 {/* <Label htmlFor={field.name}>Posizione</Label> */}
                 <Input
-                  className='border-none shadow-none bg-green-500/20 rounded-md p-4'
+                  className='border-none shadow-none bg-green-500/20 rounded-md p-4 placeholder:text-sm'
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder='es. Cucina, Frigorifero, Dispensa'
+                  placeholder='cucina, frigo, frezzer...'
                 />
               </div>
             );
@@ -156,12 +156,13 @@ export function AddFoodForm() {
               <div className='flex flex-col gap-2'>
                 {/* <Label htmlFor={field.name}>Quantità</Label> */}
                 <Input
-                  className='border-none shadow-none bg-green-500/20 rounded-md p-4'
+                  className='border-none shadow-none bg-green-500/20 rounded-md p-4 placeholder:text-sm'
                   type='number'
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
-                  onChange={(e) => field.handleChange(Number(e.target.value))}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder='1'
                 />
                 {field.state.meta.errorMap['onChange'] && (
                   <em className='text-red-700 text-sm'>

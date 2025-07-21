@@ -132,20 +132,20 @@ export function CameraCapture({
 
       {/* Captured/Uploaded Image Display */}
       {capturedImage && !isCameraActive && (
-        <div className='relative'>
+        <div className='relative flex justify-center items-center'>
           <Image
             src={capturedImage}
             alt='Food'
-            width={400}
-            height={256}
-            className='w-full h-64 object-cover rounded-lg border'
+            width={250}
+            height={250}
+            className=' object-cover rounded-lg border-1 border-gray-400 p-2'
           />
           <Button
             type='button'
             onClick={removeImage}
             variant='outline'
             size='sm'
-            className='absolute top-2 right-2 bg-white/80 hover:bg-white'
+            className='absolute top-0 right-2 bg-white/80 hover:bg-white'
           >
             <X className='h-4 w-4' />
           </Button>

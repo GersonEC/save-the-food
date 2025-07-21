@@ -43,6 +43,7 @@ export const Typography = ({
   return (
     <Component
       className={cn(
+        'text-gray-700',
         isMuted && 'text-muted-foreground',
         mapCustomClassName[as],
         className

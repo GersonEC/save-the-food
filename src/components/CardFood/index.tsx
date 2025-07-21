@@ -47,8 +47,8 @@ export const CardFood = ({ food, onDelete }: CardFoodProps) => {
     >
       <div className='flex justify-center items-center w-1/6'>
         <Image
-          src='/images/pineapple.jpg'
-          alt='Pineapple'
+          src={food.image || '/images/pineapple.jpg'}
+          alt={food.name}
           width={60}
           height={60}
           className=' object-cover rounded-xl'
