@@ -15,11 +15,9 @@ import {
 } from '@/components/ui/select';
 import { Food, FOOD_CATEGORIES, FoodCategory } from '@/domain/Food';
 import { useForm } from '@tanstack/react-form';
-import { useState } from 'react';
 import { toast } from 'sonner';
 
 export function AddFoodForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { mutation } = useFood();
 
   const form = useForm({
@@ -32,7 +30,6 @@ export function AddFoodForm() {
       image: '',
     },
     onSubmit: async (values) => {
-      setIsSubmitting(true);
       const { name, category, location, expirationDate, quantity, image } =
         values.value;
       const food: Food = {
@@ -51,8 +48,6 @@ export function AddFoodForm() {
       } catch (error) {
         console.error('Error adding food:', error);
         toast.error('Si è verificato un errore di connessione');
-      } finally {
-        setIsSubmitting(false);
       }
     },
   });
@@ -203,8 +198,12 @@ export function AddFoodForm() {
           }}
         </form.Field>
         <div className='max-w-md mx-auto mt-8'>
-          <Button type='submit' className='w-full' disabled={isSubmitting}>
-            {isSubmitting ? 'Aggiungendo...' : 'Aggiungi'}
+          <Button
+            type='submit'
+            className='w-full'
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? 'Aggiungendo...' : 'Aggiungi'}
           </Button>
         </div>
       </div>

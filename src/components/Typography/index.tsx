@@ -19,7 +19,7 @@ export const Typography = ({
   const h1CustomClassName =
     'scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance';
   const h2CustomClassName =
-    'scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0';
+    'scroll-m-20 border-b pb-2 border-gray-300 text-3xl font-semibold tracking-tight first:mt-0';
   const h3CustomClassName = 'scroll-m-20 text-2xl font-semibold tracking-tight';
   const h4CustomClassName = 'scroll-m-20 text-xl font-semibold tracking-tight';
   const pCustomClassName =

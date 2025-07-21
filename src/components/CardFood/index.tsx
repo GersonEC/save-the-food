@@ -41,7 +41,7 @@ export const CardFood = ({ food, onDelete }: CardFoodProps) => {
   return (
     <div
       className={cn(
-        'w-full flex gap-4 p-2 rounded-xl border-1 border-gray-100',
+        'w-full flex gap-4 p-2 rounded-xl border-1 border-gray-100 shadow-sm',
         isExpired ? '' : ''
       )}
     >
@@ -49,9 +49,9 @@ export const CardFood = ({ food, onDelete }: CardFoodProps) => {
         <Image
           src={food.image || '/images/pineapple.jpg'}
           alt={food.name}
-          width={60}
-          height={60}
-          className=' object-cover rounded-xl'
+          width={100}
+          height={100}
+          className=' object-cover rounded-xl h-18'
         />
       </div>
       <div className='flex flex-col gap-2 flex-1'>

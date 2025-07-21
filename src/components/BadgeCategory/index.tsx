@@ -9,7 +9,7 @@ interface BadgeCategoryProps {
 export const BadgeCategory = ({ category }: BadgeCategoryProps) => {
   const mapCategoryClassName: Record<FoodCategory, string> = {
     Frutta:
-      'bg-orange-600/30 text-orange-700 dark:text-orange-300 shadow-none border-none',
+      'bg-yellow-600/30 text-yellow-700 dark:text-yellow-300 shadow-none border-none',
     Verdura:
       'bg-green-600/30 text-green-700 dark:text-green-300 shadow-none border-none',
     Carne:

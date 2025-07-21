@@ -14,20 +14,15 @@ import { toast } from 'sonner';
 // import { BadgeCategory } from '@/components/BadgeCategory';
 // import { FoodCategory } from '@/domain/Food';
 import { Input } from '@/components/ui/input';
+import { CardFoodSkeleton } from '@/components/CardFoodSkeleton';
+
+export type LoadingStatus = 'idle' | 'pending' | 'completed';
 
 export default function Home() {
   const { query } = useFood();
   const { query: categoryQuery, mutation } = useCategory();
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
   const [search, setSearch] = useState('');
-
-  if (query.status === 'pending') {
-    return (
-      <div className='flex justify-center items-center min-h-screen'>
-        <Typography as='p'>Caricamento...</Typography>
-      </div>
-    );
-  }
 
   if (query.error) {
     return (
@@ -68,14 +63,14 @@ export default function Home() {
     }
   };
 
-  const foodSortedByExpirationDate = query.data.sort((a, b) => {
+  const foodSortedByExpirationDate = query.data?.sort((a, b) => {
     return (
       new Date(a.expirationDate).getTime() -
       new Date(b.expirationDate).getTime()
     );
   });
 
-  const filteredFood = foodSortedByExpirationDate.filter((food) =>
+  const filteredFood = foodSortedByExpirationDate?.filter((food) =>
     food.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -110,13 +105,17 @@ export default function Home() {
             </Button> */}
           </ul>
           <ul className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 mt-4'>
-            {filteredFood.map((foodItem) => (
-              <li key={foodItem.name}>
-                <CardFood food={foodItem} onDelete={handleDelete} />
-              </li>
-            ))}
+            {query.isFetching ? (
+              <CardFoodSkeleton />
+            ) : (
+              filteredFood?.map((foodItem) => (
+                <li key={foodItem.name}>
+                  <CardFood food={foodItem} onDelete={handleDelete} />
+                </li>
+              ))
+            )}
           </ul>
-          {query.data.length === 0 && (
+          {query.data && query.data.length === 0 && (
             <div className='text-center mt-8 text-gray-500'>
               <Typography as='p'>
                 Non ci sono alimenti da mostrare. Aggiungi il tuo primo
@@ -131,11 +130,11 @@ export default function Home() {
         setIsCategoryDialogOpen={setIsCategoryDialogOpen}
         handleAddCategory={handleAddCategory}
       />
-      <footer className='p-4'>
-        <Typography as='p'>
+      <footer className=' p-4'>
+        <Typography as='p' className='text-center text-sm text-gray-500'>
           <span className='font-bold'>Save the Food</span> è un progetto
           sviluppato da{' '}
-          <a href='https://www.linkedin.com/in/matteo-cavalli-9000000000000000000000000000000000000000/'>
+          <a href='https://www.linkedin.com/in/gerson-enriquez/'>
             Gerson Enriquez
           </a>
         </Typography>
