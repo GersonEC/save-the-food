@@ -9,6 +9,7 @@ import { calculateProgress, cn, getDaysRemaining } from '@/lib/utils';
 import { BadgeCategory } from '../BadgeCategory';
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
+import { Trash2 } from 'lucide-react';
 
 interface CardFoodProps {
   food: Food;
@@ -38,62 +39,72 @@ export const CardFood = ({ food, onDelete }: CardFoodProps) => {
   };
 
   return (
-    <div className={cn('w-full flex gap-4 p-2', isExpired ? '' : '')}>
-      <div className='flex justify-center items-center'>
+    <div
+      className={cn(
+        'w-full flex gap-4 p-2 rounded-xl border-1 border-gray-100',
+        isExpired ? '' : ''
+      )}
+    >
+      <div className='flex justify-center items-center w-1/6'>
         <Image
           src='/images/pineapple.jpg'
           alt='Pineapple'
-          width={80}
-          height={80}
+          width={60}
+          height={60}
           className=' object-cover rounded-xl'
         />
       </div>
       <div className='flex flex-col gap-2 flex-1'>
         <div className='flex justify-between items-center'>
-          <Typography as='p' className='text-gray-800 '>
+          <Typography as='p' className='text-gray-800 truncate w-[150px]'>
             {food.name}
           </Typography>
-          <BadgeCategory category={food.category.name} />
+          <div className='flex items-center gap-1'>
+            <BadgeCategory category={food.category.name} />
+            <Button
+              variant='link'
+              className='text-gray-500 hover:text-red-600'
+              onClick={() => handleDelete(food.id || '')}
+            >
+              <Trash2 />
+            </Button>
+          </div>
           {/* <Typography as='p'>Food Description</Typography> */}
           {/* <p>{food.location}</p>
         <p>{food.quantity}</p> */}
         </div>
-        <div className='flex flex-col'>
-          <Progress
-            value={progress}
-            className='w-full duration-300 transition-all'
-            bgColorProgressIndicator={
-              getDaysRemaining(food) === 0
-                ? 'bg-yellow-800'
-                : getDaysRemaining(food) < 2
-                ? 'bg-yellow-600'
-                : 'bg-green-700'
-            }
-          />
-          <Typography as='span' isMuted className=' text-end text-sm italic'>
-            {getDaysRemaining(food) === 0
-              ? 'Scaduto'
-              : getDaysRemaining(food) === 1
-              ? '1 giorno rimasto'
-              : `${getDaysRemaining(food)} giorni rimasti`}
-          </Typography>
-        </div>
-        <div className='flex justify-between items-center w-full'>
-          <Typography as='p' className='text-xs text-end text-gray-500'>
-            Data di scadenza:{' '}
-            {new Date(food.expirationDate).toLocaleDateString('it-IT', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </Typography>
-          <Button
-            variant='link'
-            className='text-red-600 text-xs'
-            onClick={() => handleDelete(food.id || '')}
-          >
-            Rimuovi
-          </Button>
+
+        <div className='flex justify-between items-end w-full'>
+          <div className='flex flex-col gap-1'>
+            <Typography as='p' className='text-xs text-gray-500'>
+              Scadenza:{' '}
+              {new Date(food.expirationDate).toLocaleDateString('it-IT', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </Typography>
+            <Typography as='span' isMuted className='text-xs italic'>
+              {getDaysRemaining(food) === 0
+                ? 'Scaduto'
+                : getDaysRemaining(food) === 1
+                ? '1 giorno rimasto'
+                : `${getDaysRemaining(food)} giorni rimasti`}
+            </Typography>
+          </div>
+          <div className='flex flex-col w-1/4'>
+            <Progress
+              value={progress}
+              className='w-full duration-300 transition-all opacity-80'
+              bgColorProgressIndicator={
+                getDaysRemaining(food) === 0
+                  ? 'bg-yellow-800'
+                  : getDaysRemaining(food) < 2
+                  ? 'bg-yellow-600'
+                  : 'bg-green-700'
+              }
+            />
+          </div>
         </div>
       </div>
     </div>

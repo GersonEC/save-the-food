@@ -11,8 +11,8 @@ import { Category } from '@prisma/client';
 import { Plus } from 'lucide-react';
 import { DialogAddCategory } from '@/components/DialogAddCategory';
 import { toast } from 'sonner';
-import { BadgeCategory } from '@/components/BadgeCategory';
-import { FoodCategory } from '@/domain/Food';
+// import { BadgeCategory } from '@/components/BadgeCategory';
+// import { FoodCategory } from '@/domain/Food';
 import { Input } from '@/components/ui/input';
 
 export default function Home() {
@@ -96,12 +96,12 @@ export default function Home() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <ul className='flex items-center justify-center gap-4 flex-wrap'>
-            {categoryQuery.data.map((category: Category) => (
+            {/* {categoryQuery.data.map((category: Category) => (
               <BadgeCategory
                 key={category.id}
                 category={category.name as FoodCategory}
               />
-            ))}
+            ))} */}
             {/* <Button
               variant='outline'
               onClick={() => setIsCategoryDialogOpen(true)}

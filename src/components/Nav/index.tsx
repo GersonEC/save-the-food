@@ -4,7 +4,7 @@ import { Typography } from '../Typography';
 
 export function Nav() {
   return (
-    <div className='flex justify-between items-center py-2 px-4'>
+    <div className='flex justify-between items-center py-2 px-4 border-b border-gray-100'>
       <Link href='/'>
         <Typography
           as='span'

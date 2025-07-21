@@ -32,7 +32,7 @@ export const BadgeCategory = ({ category }: BadgeCategoryProps) => {
     <Badge
       className={cn(
         mapCategoryClassName[category],
-        'text-xs font-semibold px-3 py-[1px] rounded-xl shadow-sm'
+        'text-xs font-semibold px-3 py-[1px] rounded-xl shadow-sm opacity-90'
       )}
     >
       {category}
