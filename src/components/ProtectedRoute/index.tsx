@@ -1,7 +1,8 @@
 'use client';
 
 import { useAccessCode } from '@/app/providers/AccessCodeProvider';
-import AccessCodeLogin from '@/components/AccessCodeLogin';
+import Loader from '@/components/Loader';
+import { redirect } from 'next/navigation';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -10,12 +11,12 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, loading } = useAccessCode();
 
+  if (loading !== 'completed') {
+    return <Loader />;
+  }
+
   if (!isAuthenticated && loading === 'completed') {
-    return (
-      <div className='h-[70%] flex items-center justify-center'>
-        <AccessCodeLogin />
-      </div>
-    );
+    return redirect('/login');
   }
 
   return <>{children}</>;

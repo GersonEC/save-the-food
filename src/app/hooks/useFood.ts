@@ -44,6 +44,7 @@ export const useFood = () => {
   const mutation = useMutation({
     mutationFn: async (food: Food) => {
       if (!accessCode) {
+        toast.error('Codice di accesso non valido');
         throw new Error('Access code required');
       }
 

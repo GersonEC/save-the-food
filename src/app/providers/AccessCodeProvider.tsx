@@ -29,8 +29,8 @@ export function AccessCodeProvider({
     const savedAccessCode = localStorage.getItem('saveTheFoodAccessCode');
     if (savedAccessCode) {
       setAccessCodeState(savedAccessCode);
-      setLoading('completed');
     }
+    setLoading('completed');
   }, []);
 
   const setAccessCode = (code: string) => {
