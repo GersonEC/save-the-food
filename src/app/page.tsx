@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 // import { FoodCategory } from '@/domain/Food';
 import { Input } from '@/components/ui/input';
 import { CardFoodSkeleton } from '@/components/CardFoodSkeleton';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export type LoadingStatus = 'idle' | 'pending' | 'completed';
 
@@ -75,8 +76,8 @@ export default function Home() {
   );
 
   return (
-    <div>
-      <main className='p-4'>
+    <ProtectedRoute>
+      <main className='p-4 h-[85%]'>
         <div className='flex flex-col gap-4'>
           <Button className='self-end'>
             <Link href='/add-food'>
@@ -130,15 +131,15 @@ export default function Home() {
         setIsCategoryDialogOpen={setIsCategoryDialogOpen}
         handleAddCategory={handleAddCategory}
       />
-      <footer className=' p-4'>
+      <footer className=' p-4 fixed bottom-0 w-full'>
         <Typography as='p' className='text-center text-sm text-gray-500'>
           <span className='font-bold'>Save the Food</span> è un progetto
           sviluppato da{' '}
           <a href='https://www.linkedin.com/in/gerson-enriquez/'>
-            Gerson Enriquez
+            <u>Gerson Enriquez</u>
           </a>
         </Typography>
       </footer>
-    </div>
+    </ProtectedRoute>
   );
 }

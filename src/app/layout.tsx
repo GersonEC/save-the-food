@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from 'sonner';
 import { Nav } from '@/components/Nav';
 import { QueryProvider } from './providers/QueryClientProvider';
+import { AccessCodeProvider } from './providers/AccessCodeProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,19 +30,21 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body
-        className={` ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` ${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
       >
         <QueryProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Nav />
-            <Toaster />
-            {children}
-          </ThemeProvider>
+          <AccessCodeProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Nav />
+              <Toaster />
+              {children}
+            </ThemeProvider>
+          </AccessCodeProvider>
         </QueryProvider>
       </body>
     </html>
