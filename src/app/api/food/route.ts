@@ -1,10 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma-client';
 
-// GET /api/food - Get all food items
-export async function GET() {
+// GET /api/food - Get all food items for a specific access code
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const accessCode = searchParams.get('accessCode');
+
+    if (!accessCode) {
+      return NextResponse.json(
+        { error: 'Access code is required' },
+        { status: 400 }
+      );
+    }
+
     const data = await prisma.food.findMany({
+      where: {
+        accessCode: accessCode,
+      },
       include: {
         category: true,
       },
@@ -23,13 +36,20 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const requestData = await request.json();
-    const { name, category, location, expirationDate, quantity, image } =
-      requestData;
+    const {
+      name,
+      category,
+      location,
+      expirationDate,
+      quantity,
+      image,
+      accessCode,
+    } = requestData;
 
     // Validate required fields
-    if (!name || !category) {
+    if (!name || !category || !accessCode) {
       return NextResponse.json(
-        { error: 'Name and category are required' },
+        { error: 'Name, category, and access code are required' },
         { status: 400 }
       );
     }
@@ -78,6 +98,7 @@ export async function POST(request: NextRequest) {
         quantity: quantity || 1,
         image: image,
         categoryId: categoryRecord.id,
+        accessCode: accessCode,
       },
     });
 
@@ -103,7 +124,29 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const requestData = await request.json();
-    const { id } = requestData;
+    const { id, accessCode } = requestData;
+
+    if (!accessCode) {
+      return NextResponse.json(
+        { error: 'Access code is required' },
+        { status: 400 }
+      );
+    }
+
+    // Verify the food item belongs to the access code before deleting
+    const foodItem = await prisma.food.findFirst({
+      where: {
+        id: id,
+        accessCode: accessCode,
+      },
+    });
+
+    if (!foodItem) {
+      return NextResponse.json(
+        { error: 'Food item not found or access denied' },
+        { status: 404 }
+      );
+    }
 
     // Delete the food item
     await prisma.food.delete({

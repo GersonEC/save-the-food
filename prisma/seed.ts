@@ -65,7 +65,7 @@ async function main() {
       continue;
     }
 
-    // Create the food item with category relationship
+    // Create the food item with category relationship and access code
     await prisma.food.create({
       data: {
         name: foodItem.name,
@@ -74,12 +74,13 @@ async function main() {
         quantity: foodItem.quantity,
         image: foodItem.image,
         categoryId: category.id,
+        accessCode: '1234', // Default access code for seeded data
       },
     });
   }
 
   console.log(
-    `✅ Created ${foodData.length} food items with category relationships`
+    `✅ Created ${foodData.length} food items with category relationships and access code`
   );
   console.log('🎉 Database seeding completed!');
 }
