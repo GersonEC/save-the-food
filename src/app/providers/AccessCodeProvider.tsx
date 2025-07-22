@@ -1,12 +1,14 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { LoadingStatus } from '../page';
 
 interface AccessCodeContextType {
   accessCode: string | null;
   setAccessCode: (code: string) => void;
   clearAccessCode: () => void;
   isAuthenticated: boolean;
+  loading: LoadingStatus;
 }
 
 const AccessCodeContext = createContext<AccessCodeContextType | undefined>(
@@ -19,12 +21,15 @@ export function AccessCodeProvider({
   children: React.ReactNode;
 }) {
   const [accessCode, setAccessCodeState] = useState<string | null>(null);
+  const [loading, setLoading] = useState<LoadingStatus>('idle');
 
   // Load access code from localStorage on mount
   useEffect(() => {
+    setLoading('pending');
     const savedAccessCode = localStorage.getItem('saveTheFoodAccessCode');
     if (savedAccessCode) {
       setAccessCodeState(savedAccessCode);
+      setLoading('completed');
     }
   }, []);
 
@@ -47,6 +52,7 @@ export function AccessCodeProvider({
         setAccessCode,
         clearAccessCode,
         isAuthenticated,
+        loading,
       }}
     >
       {children}

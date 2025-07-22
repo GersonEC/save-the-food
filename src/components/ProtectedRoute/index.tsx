@@ -8,9 +8,9 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated } = useAccessCode();
+  const { isAuthenticated, loading } = useAccessCode();
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && loading === 'completed') {
     return (
       <div className='h-[70%] flex items-center justify-center'>
         <AccessCodeLogin />
