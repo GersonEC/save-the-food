@@ -54,5 +54,40 @@
     "location": "Frigo",
     "expirationDate": "2025-07-17T22:00:00.000Z",
     "quantity": 1
+  },
+  {
+    "name": "Bistecca",
+    "category": "Carne",
+    "location": "Freezer",
+    "expirationDate": "2025-08-15T22:00:00.000Z",
+    "quantity": 1
+  },
+  {
+    "name": "Salmone",
+    "category": "Pesce",
+    "location": "Freezer",
+    "expirationDate": "2025-08-10T22:00:00.000Z",
+    "quantity": 1
+  },
+  {
+    "name": "Pasta",
+    "category": "Grano",
+    "location": "Dispensa",
+    "expirationDate": "2025-12-31T23:00:00.000Z",
+    "quantity": 1
+  },
+  {
+    "name": "Patatine",
+    "category": "Snack",
+    "location": "Dispensa",
+    "expirationDate": "2025-09-30T22:00:00.000Z",
+    "quantity": 1
+  },
+  {
+    "name": "Coca Cola",
+    "category": "Bevande",
+    "location": "Frigo",
+    "expirationDate": "2025-10-15T22:00:00.000Z",
+    "quantity": 1
   }
 ]

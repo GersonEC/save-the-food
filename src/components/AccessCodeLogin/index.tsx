@@ -16,6 +16,7 @@ import {
 import { useForm } from '@tanstack/react-form';
 import { LoadingStatus } from '@/app/page';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
 export default function AccessCodeLogin() {
   const [loading, setLoading] = useState<LoadingStatus>('idle');
@@ -35,8 +36,9 @@ export default function AccessCodeLogin() {
       setLoading('pending');
 
       try {
+        debugger;
         // Validate the access code by trying to fetch food items
-        const response = await fetch(`/api/food?accessCode=${code}`);
+        const response = await fetch(`/api/access-code?code=${code}`);
 
         if (response.ok) {
           setAccessCode(code);
@@ -103,7 +105,15 @@ export default function AccessCodeLogin() {
 
           <div className='mt-6 text-center text-sm text-muted-foreground'>
             <p>Non hai un codice di accesso?</p>
-            <p>Chiedi al tuo membro della famiglia per il codice condiviso.</p>
+            <p className='inline'>
+              <Link
+                className='underline font-semibold hover:opacity-80 transition duration-300'
+                href='/create-access-code'
+              >
+                Crea uno
+              </Link>{' '}
+              oppure chiedi al tuo membro di famiglia il codice condiviso.
+            </p>
           </div>
         </CardContent>
       </Card>

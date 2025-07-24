@@ -41,11 +41,11 @@ export const CardFood = ({ food, onDelete }: CardFoodProps) => {
   return (
     <div
       className={cn(
-        'w-full flex gap-4 p-2 rounded-xl border-1 border-gray-100 shadow-sm',
+        'w-full flex gap-4 p-2 rounded-xl border-1 border-gray-100 shadow-sm min-w-[300px]',
         isExpired ? '' : ''
       )}
     >
-      <div className='flex justify-center items-center w-1/6'>
+      <div className='flex justify-center items-center w-1/6 min-w-[50px]'>
         <Image
           src={food.image || '/images/pineapple.jpg'}
           alt={food.name}
