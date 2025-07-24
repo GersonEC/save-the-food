@@ -19,6 +19,7 @@ async function main() {
   // Clear existing data
   await prisma.food.deleteMany();
   await prisma.category.deleteMany();
+  await prisma.family.deleteMany();
 
   // Create categories from the food data
   const categoryNames = new Set<string>();
@@ -37,6 +38,16 @@ async function main() {
   );
 
   console.log(`✅ Created ${categories.length} categories`);
+
+  // Create a default family for seeded data
+  const defaultFamily = await prisma.family.create({
+    data: {
+      name: 'Default Family',
+      accessCode: '1234',
+    },
+  });
+
+  console.log(`✅ Created default family: ${defaultFamily.name}`);
 
   // Create foods with their category relationships
   for (const foodItem of foodData as FoodItem[]) {
@@ -75,6 +86,7 @@ async function main() {
         image: foodItem.image,
         categoryId: category.id,
         accessCode: '1234', // Default access code for seeded data
+        familyId: defaultFamily.id,
       },
     });
   }

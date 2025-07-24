@@ -1,6 +1,6 @@
 export const CardFoodSkeleton = () => {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'>
+    <>
       {Array.from({ length: 3 }).map((_, index) => (
         <li key={index} className='list-none'>
           <div className='w-full flex gap-4 p-2 rounded-xl border-1 border-gray-100 h-24 bg-gray-100'>
@@ -25,6 +25,6 @@ export const CardFoodSkeleton = () => {
           </div>
         </li>
       ))}
-    </div>
+    </>
   );
 };

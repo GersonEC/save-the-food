@@ -16,20 +16,22 @@ import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { CardFoodSkeleton } from '@/components/CardFoodSkeleton';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { useFamily } from './hooks/useFamily';
 
 export type LoadingStatus = 'idle' | 'pending' | 'completed';
 
 export default function Home() {
-  const { query } = useFood();
+  const { query: foodQuery } = useFood();
   const { query: categoryQuery, mutation } = useCategory();
+  const { query: familyQuery } = useFamily();
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
   const [search, setSearch] = useState('');
 
-  if (query.error) {
+  if (foodQuery.error) {
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <Typography as='p' className='text-red-500'>
-          {query.error.message}
+          {foodQuery.error.message}
         </Typography>
       </div>
     );
@@ -51,20 +53,20 @@ export default function Home() {
     try {
       const response = await fetch(`/api/food`, {
         method: 'DELETE',
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ id, accessCode: familyQuery.data?.accessCode }),
       });
       if (!response.ok) {
         throw new Error('Errore nella rimozione del cibo');
       }
       toast.success('Cibo rimosso con successo');
-      query.refetch();
+      foodQuery.refetch();
     } catch (error) {
       console.error('Error deleting food:', error);
       toast.error('Errore nella rimozione del cibo');
     }
   };
 
-  const foodSortedByExpirationDate = query.data?.sort((a, b) => {
+  const foodSortedByExpirationDate = foodQuery.data?.sort((a, b) => {
     return (
       new Date(a.expirationDate).getTime() -
       new Date(b.expirationDate).getTime()
@@ -79,11 +81,16 @@ export default function Home() {
     <ProtectedRoute>
       <main className='p-4 h-[85%]'>
         <div className='flex flex-col gap-4'>
-          <Button className='self-end'>
-            <Link href='/add-food'>
-              <Plus />
-            </Link>
-          </Button>
+          <div className='flex justify-between items-end gap-2'>
+            <Typography as='p' className='text-lg font-semibold'>
+              {familyQuery.data?.name}
+            </Typography>
+            <Button className='self-end'>
+              <Link href='/add-food'>
+                <Plus />
+              </Link>
+            </Button>
+          </div>
           <Input
             className='border-none shadow-none bg-green-500/20 rounded-xl p-4'
             type='text'
@@ -91,22 +98,22 @@ export default function Home() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <ul className='flex items-center justify-center gap-4 flex-wrap'>
-            {/* {categoryQuery.data.map((category: Category) => (
+          {/* <ul className='flex items-center justify-center gap-4 flex-wrap'>
+            {categoryQuery.data.map((category: Category) => (
               <BadgeCategory
                 key={category.id}
                 category={category.name as FoodCategory}
               />
-            ))} */}
-            {/* <Button
+            ))}
+            <Button
               variant='outline'
               onClick={() => setIsCategoryDialogOpen(true)}
             >
               <Plus />
-            </Button> */}
-          </ul>
+            </Button>
+          </ul> */}
           <ul className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 mt-4'>
-            {query.isFetching ? (
+            {foodQuery.isFetching ? (
               <CardFoodSkeleton />
             ) : (
               filteredFood?.map((foodItem) => (
@@ -116,11 +123,11 @@ export default function Home() {
               ))
             )}
           </ul>
-          {query.data && query.data.length === 0 && (
+          {foodQuery.data && foodQuery.data.length === 0 && (
             <div className='text-center mt-8 text-gray-500'>
               <Typography as='p'>
-                Non ci sono alimenti da mostrare. Aggiungi il tuo primo
-                alimento!
+                Non ci sono alimenti da mostrare. Aggiungi il tuo primo alimento
+                cliccando sul pulsante + in alto a destra!
               </Typography>
             </div>
           )}

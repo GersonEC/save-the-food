@@ -89,6 +89,11 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Find the family for this access code
+    const family = await prisma.family.findUnique({
+      where: { accessCode },
+    });
+
     // Create the food item
     const food = await prisma.food.create({
       data: {
@@ -99,6 +104,7 @@ export async function POST(request: NextRequest) {
         image: image,
         categoryId: categoryRecord.id,
         accessCode: accessCode,
+        familyId: family?.id,
       },
     });
 
