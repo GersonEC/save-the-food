@@ -79,8 +79,8 @@ export default function Home() {
 
   return (
     <ProtectedRoute>
-      <main className='p-4 h-[85%]'>
-        <div className='flex flex-col gap-4'>
+      <main className='p-4 h-[88%]'>
+        <div className='flex flex-col gap-4 h-full'>
           <div className='flex justify-between items-end gap-2'>
             <Typography as='p' className='text-lg font-semibold'>
               {familyQuery.data?.name}
@@ -112,7 +112,7 @@ export default function Home() {
               <Plus />
             </Button>
           </ul> */}
-          <ul className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 mt-4'>
+          <ul className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 mt-4 h-full overflow-y-auto p-2'>
             {foodQuery.isFetching ? (
               <CardFoodSkeleton />
             ) : (
@@ -138,7 +138,7 @@ export default function Home() {
         setIsCategoryDialogOpen={setIsCategoryDialogOpen}
         handleAddCategory={handleAddCategory}
       />
-      <footer className=' p-4 fixed bottom-0 w-full'>
+      <footer className=' p-4 w-full'>
         <Typography as='p' className='text-center text-sm text-gray-500'>
           <span className='font-bold'>Save the Food</span> è un progetto
           sviluppato da{' '}
